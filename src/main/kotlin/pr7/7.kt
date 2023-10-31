@@ -10,6 +10,7 @@ class Visitor(name: String, var id: Int? = null, var book: Book? = null) : Perso
 
 class Library {
     val books = mutableListOf<Book>()
+    val ratings = mutableMapOf<String, MutableList<Int>>()
 
     fun addBook(book: Book) {
         if (books.none { it.name == book.name }) {
@@ -38,13 +39,24 @@ class Library {
             if (visitor.id == null) {
                 visitor.id = books.size + 1
             }
+            if (!ratings.containsKey(name)) {
+                ratings[name] = mutableListOf()
+            }
         }
     }
 
-    fun returnBook(visitor: Visitor) {
+    fun returnBook(visitor: Visitor, rating: Int) {
         if (visitor.book != null) {
+            val bookName = visitor.book?.name
+            if (bookName != null) {
+                ratings[bookName]?.add(rating)
+            }
             visitor.book = null
         }
+    }
+    fun getBookRating(bookName: String): Double? {
+        val bookRatings = ratings[bookName]
+        return bookRatings?.average()
     }
 }
 
@@ -52,7 +64,8 @@ fun main() {
     val author = Author("Николай Гоголь")
     val book1 = Book("Мертвые души", author)
     val book2 = Book("Шинель", author)
-    val visitor = Visitor("Иван")
+    val visitor1 = Visitor("Иван")
+    val visitor2 = Visitor("Петя")
 
     val library = Library()
     library.addBook(book1)
@@ -66,13 +79,14 @@ fun main() {
     val authorBooks = library.findAuthorBooks(author)
     println("Книги автора " + author.name + ": " + authorBooks.map { it.name })
 
-    library.borrowBook(visitor, "Мертвые души")
-    println("Одолженная книга: " + visitor.book?.name)
+    library.borrowBook(visitor1, "Мертвые души")
+    println("Одолженная книга: " + visitor1.book?.name)
+    library.returnBook(visitor1, 4)
 
-    library.returnBook(visitor)
-    println("Возвращенная книга: " + visitor.book)
+    library.borrowBook(visitor2, "Мертвые души")
+    println("Одолженная книга: " + visitor2.book?.name)
+    library.returnBook(visitor2, 2)
 
-    library.removeBook("Мертвые души", visitor)
-    print("Список книг в библиотеке после удаления книги \"Мертвые души\": ")
-    library.books.forEach{ print(it.name) }
+    val bookRating = library.getBookRating("Мертвые души")
+    println("Оценка книги 'Мертвые души': $bookRating")
 }
