@@ -1,80 +1,92 @@
-import java.util.*
-import kotlin.random.Random
+class Dish(val name: String, val price: Double, val weight: Double)
+class Order(val customer: Customer, private val menu: Map<String, Dish>) {
+    private val dishes: MutableMap<String, Int> = mutableMapOf()
 
-class Dish(val name: String, val price: Double, val weight: Double) {
-    // возможно, здесь могут быть и другие характеристики блюда
-}
-
-class Order(val customer: Customer) {
-    val orderItems = mutableMapOf<Dish, Int>()
-
-    fun addDish(dish: Dish, quantity: Int) {
-        orderItems[dish] = quantity
-    }
-
-    fun getTotalCost(): Double {
-        var totalCost = 0.0
-        for ((dish, quantity) in orderItems) {
-            totalCost += dish.price * quantity
+    fun addDish(dishName: String, quantity: Int) {
+        val dish = menu[dishName]
+        if (dish != null) {
+            dishes[dish.name] = dishes.getOrDefault(dish.name, 0) + quantity
         }
-        return totalCost
+    }
+    fun getTotalPrice(): Double {
+        var totalPrice = 0.0
+        for ((dishName, quantity) in dishes) {
+            val dish = menu[dishName]
+            if (dish != null) {
+                totalPrice += dish.price * quantity
+            }
+        }
+        return totalPrice
+    }
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append("Заказ (${customer.name}):\n")
+        for ((dishName, quantity) in dishes) {
+            sb.append("${dishName}: ${quantity}\n")
+        }
+        sb.append("Общая стоимость: ${getTotalPrice()}")
+        return sb.toString()
     }
 }
-
-class Customer(val id: Int, val name: String, val contactInfo: String) {
-    // дополнительные свойства о клиенте
-}
-
+class Customer(val id: Int, val name: String, val contact: String)
 class Restaurant {
-    val menu = mutableListOf<Dish>()
-    val customers = mutableSetOf<Customer>()
-    val orders = mutableMapOf<Int, Order>() // идентификатор заказа -> заказ
-
+    private val menu: MutableMap<String, Dish> = mutableMapOf()
+    private val customers: MutableSet<Customer> = mutableSetOf()
+    private val orders: MutableMap<Int, Order> = mutableMapOf()
+    private var orderIdCounter: Int = 1
     fun addDishToMenu(dish: Dish) {
-        menu.add(dish)
+        menu[dish.name] = dish
     }
-
     fun createOrder(customer: Customer): Int {
-        val orderId = (1..1000).random(Random(System.nanoTime()))
-        val order = Order(customer)
-        orders[orderId] = order
-        return orderId
+        customers.add(customer)
+        val order = Order(customer, menu)
+        orders[orderIdCounter] = order
+        return orderIdCounter++
     }
-
-    fun addDishToOrder(orderId: Int, dish: Dish, quantity: Int) {
+    fun addDishToOrder(orderId: Int, dishName: String, quantity: Int) {
         val order = orders[orderId]
-        order?.addDish(dish, quantity)
+        if (order != null) {
+            order.addDish(dishName, quantity)
+        }
     }
-
-    // Дополнительные функции для просмотра информации о заказах, клиентах и меню
+    fun printMenu() {
+        println("Меню:")
+        for ((name, dish) in menu) {
+            println("- ${name}: ${dish.price}")
+        }
+    }
+    fun printOrder(orderId: Int) {
+        val order = orders[orderId]
+        if (order != null) {
+            println(order)
+        } else {
+            println("Заказ не найден")
+        }
+    }
+    fun printCustomers() {
+        println("Клиенты:")
+        for (customer in customers) {
+            println("- ${customer.name} (${customer.contact})")
+        }
+    }
 }
-
 fun main() {
     val restaurant = Restaurant()
+    restaurant.addDishToMenu(Dish("Пицца", 10.0, 0.7))
+    restaurant.addDishToMenu(Dish("Бургер", 8.0, 0.3))
+    restaurant.addDishToMenu(Dish("Салат", 6.0, 0.1))
 
-    // Добавление блюд в меню
-    val dish1 = Dish("Пицца Маргарита", 12.0, 0.7)
-    val dish2 = Dish("Борщ", 8.5, 0.4)
-    val dish3 = Dish("Стейк", 25.0, 0.5)
-    restaurant.addDishToMenu(dish1)
-    restaurant.addDishToMenu(dish2)
-    restaurant.addDishToMenu(dish3)
-
-    // Создание клиентов
-    val customer1 = Customer(1, "Иван", "ivan@example.com")
-    val customer2 = Customer(2, "Анна", "anna@example.com")
-    restaurant.customers.add(customer1)
-    restaurant.customers.add(customer2)
-
-    // Создание заказов
+    val customer1 = Customer(1, "Петр", "89454683069")
+    val customer2 = Customer(2, "Иван", "89583642288")
     val orderId1 = restaurant.createOrder(customer1)
     val orderId2 = restaurant.createOrder(customer2)
 
-    // Добавление блюд в заказы
-    restaurant.addDishToOrder(orderId1, dish1, 2)
-    restaurant.addDishToOrder(orderId1, dish3, 1)
-    restaurant.addDishToOrder(orderId2, dish2, 4)
+    restaurant.addDishToOrder(orderId1, "Пицца", 2)
+    restaurant.addDishToOrder(orderId1, "Салат", 1)
+    restaurant.addDishToOrder(orderId2, "Бургер", 3)
 
-    // Вывод информации о заказах, клиентах и меню
-    // ...
+    restaurant.printOrder(orderId1)
+    restaurant.printOrder(orderId2)
+    restaurant.printCustomers()
+    restaurant.printMenu()
 }
