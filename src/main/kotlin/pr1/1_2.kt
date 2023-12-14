@@ -1,5 +1,4 @@
 package pr1
-
 fun main() {
     var n :Int = readLine()!!.toInt()
     var k8 = n/8

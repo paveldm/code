@@ -1,5 +1,4 @@
 package pr1
-
 fun main() {
     var arr: Array<Int> = arrayOf(0, 0, 0, 0)
     var S:String = "ATGCCTCTCTC"

@@ -1,5 +1,4 @@
 package pr2
-
 fun main(){
     val N: Int = readLine().orEmpty().toInt()
     val arr : Array<String>
