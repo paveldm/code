@@ -1,12 +1,10 @@
 package pr3
-
 import kotlin.random.Random
 fun main() {
     val passwordLength = enterPasswordLength()
     val password = generatePassword(passwordLength)
     println("Безопасный пароль: " + password)
 }
-
 fun enterPasswordLength(): Int {
     print("Введите длину пароля (N >= 8): ")
     var passwordLength = readLine()?.toIntOrNull()
@@ -17,7 +15,6 @@ fun enterPasswordLength(): Int {
     }
     return passwordLength
 }
-
 fun generatePassword(length: Int): String {
     val upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     val lowers = "abcdefghijklmnopqrstuvwxyz"

@@ -1,5 +1,4 @@
 package pr3
-
 fun game(){
     val M: Int = (0..1000).random()
     var x: Int

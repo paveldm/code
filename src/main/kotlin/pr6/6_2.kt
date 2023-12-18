@@ -1,8 +1,6 @@
 package pr6
-
 class AmazingString(input: CharArray) {
     private var charArray: CharArray = input
-
     constructor(input: String) : this(input.toCharArray())
     fun getSymbol(index: Int): Char {
         if (index < 0 || index >= charArray.size) {
@@ -40,23 +38,17 @@ class AmazingString(input: CharArray) {
         }
     }
 }
-
 fun main() {
-    val amazingString = AmazingString("a")
+    val amazingString = AmazingString("asd1232")
     amazingString.print()
-
     var i :Int = readLine()!!.toInt()
     println("Символ № $i: ${amazingString.getSymbol(i)}")
-
     println("Длина строки: ${amazingString.length()}")
-
     println("Содержит ли подстроку \"23\": ${amazingString.checkSubstring("23")}")
     println("Содержит ли подстроку \"31\": ${amazingString.checkSubstring("31")}")
-
     amazingString.delSpace()
     println("После удаления ведущих пробелов:")
     amazingString.print()
-
     amazingString.reverse()
     println("Разворот:")
     amazingString.print()

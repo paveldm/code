@@ -1,6 +1,5 @@
 package pr5
 import kotlin.random.Random
-
 class Cat {
     private fun sleep() {
         println("Sleep")

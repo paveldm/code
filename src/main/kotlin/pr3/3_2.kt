@@ -1,7 +1,6 @@
 package pr3
-
 fun main() {
-    val S: String = readLine().orEmpty().toString()
+    val S: String = readLine().orEmpty()
     var newS: String = ""
     for (char in S) {
         when (char) {
