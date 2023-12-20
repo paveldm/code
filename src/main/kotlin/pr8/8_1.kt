@@ -1,6 +1,5 @@
 enum class DrinkType(val volume: Int) {
     COLA(1000), WATER(500), TEA(250), COFFEE(300);
-
     fun getDrinkName(): String {
         return when (this) {
             COLA -> "Cola"
@@ -9,12 +8,10 @@ enum class DrinkType(val volume: Int) {
             COFFEE -> "Coffee"
         }
     }
-
     fun getDrinkVolume(drinkType: DrinkType): Int {
         return drinkType.volume
     }
 }
-
 fun main() {
     val cola = DrinkType.COLA
     val water = DrinkType.WATER

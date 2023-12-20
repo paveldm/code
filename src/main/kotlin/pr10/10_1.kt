@@ -1,12 +1,8 @@
 package pr10
-
 import java.time.LocalDate
-
 class FormValidator {
     fun validateName(name: String) {
-        if (name.length < 2 || name.length > 20 || name[0].isLowerCase()) {
-            throw Exception("Некорректное имя")
-        }
+        if (name.length < 2 || name.length > 20 || name[0].isLowerCase()) { throw Exception("Некорректное имя") }
     }
     fun validateBirth(birth: LocalDate) {
         val currentDate = LocalDate.now()
@@ -31,11 +27,7 @@ class FormValidator {
         }
     }
 }
-
-enum class Gender {
-    Male, Female
-}
-
+enum class Gender { Male, Female }
 fun main() {
     val formValidator = FormValidator()
     val name = "John"
@@ -47,7 +39,5 @@ fun main() {
         formValidator.validateBirth(birth)
         formValidator.validateGender(gender)
         formValidator.validateWeight(weight)
-    } catch (e: Exception) {
-        println(e.message)
-    }
+    } catch (e: Exception) { println(e.message) }
 }

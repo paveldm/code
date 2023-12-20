@@ -16,7 +16,6 @@ class Catalog<T> {
         return products.filter { it.price in minPrice..maxPrice }
     }
 }
-
 fun <T> purchase(catalog: Catalog<T>, productName: String): String {
     val product = catalog.findProductByName(productName)
     return if (product != null) {
@@ -25,21 +24,16 @@ fun <T> purchase(catalog: Catalog<T>, productName: String): String {
         "Товар не найден"
     }
 }
-
 fun main() {
     val electronicsCatalog = Catalog<String>()
     val laptop = Product2("Ноутбук", 1500.0, "Игровой", "Электроника")
     val smartphone = Product2("Смартфон", 800.0, "256 Гб", "Электроника")
-
     electronicsCatalog.addProduct(laptop)
     electronicsCatalog.addProduct(smartphone)
-
     println("Товары из категории \"Электроника\":")
     electronicsCatalog.displayProducts()
-
     val purchaseResult = purchase(electronicsCatalog, "Смартфон")
     println(purchaseResult)
-
     val filteredProducts = electronicsCatalog.filterByPrice(700.0, 1200.0)
     println("Фильтрация по цене:")
     for (product in filteredProducts) {

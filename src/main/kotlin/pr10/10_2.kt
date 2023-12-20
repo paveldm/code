@@ -1,7 +1,5 @@
 package pr10
-
 data class User(val name: String, val age: Int, val friends: List<String>)
-
 fun main() {
     val userList = object {
         val users = listOf(

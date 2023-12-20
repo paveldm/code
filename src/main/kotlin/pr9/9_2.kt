@@ -1,5 +1,4 @@
 package pr9
-
 interface Device {
     fun isRepairable(): Boolean
 }
